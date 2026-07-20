@@ -1,20 +1,4 @@
-/*
-
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
-
-If your plugin does not need CSS, delete this file.
-
-*/
-
-
-/***
- *
- * basic Elements 
- *
- * */
-
-.simple-immich-spacer {
+.simple-immich .spacer {
 	border-color: var(--text-faint);
 	place-self: center;
 	width: 95%;
@@ -22,8 +6,7 @@ If your plugin does not need CSS, delete this file.
 	padding: 0;
 }
 
-.simple-immich-seperater {
-
+.simple-immich .seperater {
 	border: 0;
 	border-color: var(--text-faint);
 	border-inline: var(--border-width);
@@ -34,57 +17,83 @@ If your plugin does not need CSS, delete this file.
 	min-height: -webkit-fill-available;
 }
 
-
-.simple-immich-authentication-feilds {
-
-	max-width: 600px;
-	width: 90%;
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
-	align-self: center;
+.simple-immich .account-form .button {
+	height: fit-content;
+	width: 4.3rem;
+	padding: calc(var(--size-4-3) + var(--size-2-1)) var(--size-4-5);
 }
 
+.simple-immich .secret-button {
+	display: flex;
+	align-items: center;
+	gap: var(--size-4-3);
+}
 
-.simple-immich-auth-view {
-
+.simple-immich .secret-button>div>span {
+	background-color: transparent;
 	width: 100%;
 	display: flex;
-	flex-direction: column;
-	padding: 3rem;
-
-	gap: 2rem;
+	justify-content: space-between;
 }
 
-.simple-immich-authentication-options {
-
-	display: flex;
-	place-self: center;
-	gap: 4rem;
-
+.simple-immich .secret-button>div>span .setting-password {
+	width: 100%;
+	max-width: unset;
 }
 
-.simple-button {
-	min-width: 4rem;
-	padding: 1rem .5rem;
-}
-
-input.simple-immich-input {
+.simple-immich .secret-button>div:is(:not(.clickable-icon .mod-warning)),
+.simple-immich input.input,
+.simple-immich input.simple-immich-input {
 	border: none;
-	background-color: var(--background-secondary-alt);
-	padding: var(--size-4-2) var(--size-4-2);
-	border-size: var(--border-width);
-	border-color: transparent;
+	padding-inline: var(--size-4-2);
+	padding-block: var(--size-4-3);
 	border-style: solid;
+	border-color: transparent;
+	border-width: var(--border-width);
 	border-radius: var(--radius-m);
 	color: var(--text-normal);
-
-	width: 80%;
+	width: 100%;
+	height: fit-content;
 }
 
+.simple-immich .secret-button>div:is(:not(.clickable-icon .mod-warning)) {
+	height: 2.8rem;
+	background-color: var(--container-bg);
+}
 
+.simple-immich .secret-button button {
+	height: auto;
+	margin: 0;
+	display: grid;
+	width: 5rem;
+	align-self: stretch;
+	/* height: -webkit-fill-available; */
+}
+
+input.input::placeholder,
 input.simple-immich-input::placeholder {
 	color: var(--text-muted);
+}
+
+.simple-immich .labeled-input {
+	display: grid;
+
+	align-items: center;
+	grid-template-columns: 120px 1fr;
+	grid-template-areas: "label input";
+}
+
+.simple-immich .labeled-input:is(.vertical) {
+	grid-template-areas:
+		"label label"
+		"input input";
+}
+
+.simple-immich .labeled-input-label {
+	margin: 0;
+	padding: 0;
+	display: grid;
+	padding-inline: var(--size-4-2);
 }
 
 /*
@@ -92,9 +101,8 @@ input.simple-immich-input::placeholder {
  *
  * */
 
-
-
-.simple-immich-settings-tab {
+.simple-immich.settings,
+.simple-immich {
 	padding: 0;
 	display: flex;
 	flex-direction: column;
@@ -102,27 +110,73 @@ input.simple-immich-input::placeholder {
 }
 
 
-.simple-immich-settings-tab :is(h1, h2, h3, h4, h5, h6) {
+
+.simple-immich :is(h1, h2, h3, h4, h5, h6, p) {
 	padding: 0;
 	margin: 0;
 }
 
-.simple-immich-settings-add-server-input {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
 
+.simple-immich .container {
+	display: flex;
+	flex-direction: column;
+	gap: var(--size-4-2);
+
+	padding-block: var(--size-4-2);
+	padding-inline: var(--size-4-2);
+	border-radius: var(--radius-m);
+	gap: var(--size-4-4);
 }
 
-.simple-immich-settings-servers,
-.simple-immich-settings-add-server-section {
+.simple-immich.settings .connections,
+.simple-immich.settings .connection .account-form,
+.simple-immich.settings .servers,
+.simple-immich.settings .add-server,
+.simple-immich.settings .server-accounts {
 	display: flex;
 	flex-direction: column;
 	gap: var(--size-4-4);
 }
 
-.simple-immich-settings-server-block {
+.simple-immich input.input.bg-primary,
+input.input.bg-primary,
+.bg-primary {
+	background-color: var(--background-primary);
+}
 
+.simple-immich input.input.bg-primary-alt,
+input.input.bg-primary-alt,
+.bg-primary-alt {
+	background-color: var(--background-primary-alt);
+}
+
+.simple-immich input.input.bg-secondary,
+input.input.bg-secondary,
+.bg-secondary {
+	background-color: var(--background-secondary);
+}
+
+.simple-immich input.input.bg-secondary-alt,
+input.input.bg-secondary-alt,
+.bg-secondary-alt {
+	background-color: var(--background-secondary-alt);
+}
+
+
+.simple-immich.settings .account-form .buttons {
+	display: flex;
+	justify-content: right;
+	gap: var(--size-4-3);
+}
+
+.simple-immich.settings .connection-input {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: var(--size-4-4);
+}
+
+.simple-immich.settings .connection-block {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -131,29 +185,24 @@ input.simple-immich-input::placeholder {
 	background-color: var(--background-secondary);
 
 	gap: var(--size-4-4);
-
 	padding-inline: var(--size-4-4);
 	padding-block: var(--size-4-6);
-
 	border-radius: var(--radius-m);
 }
 
-.simple-immich-server-header {
-
-	/* background-color: var(--background-secondary-alt); */
+.simple-immich.settings .connection-header {
 	border-radius: var(--radius-m);
 	gap: var(--size-4-4);
-	/* padding-inline: var(--size-4-4); */
-	padding-block: var(--size-4-2);
-	display: grid;
+	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	grid-template-columns: 160px 1fr 120px;
-
 }
 
-.simple-Immich-settings-account-block {
+.simple-immich.settings .connection-accounts {
 	background-color: var(--background-secondary-alt);
+}
+
+.simple-Immich.settings .account-block {
 	border-radius: var(--radius-m);
 	gap: 0px;
 	padding-inline: var(--size-4-4);
@@ -162,24 +211,23 @@ input.simple-immich-input::placeholder {
 	flex-direction: column;
 }
 
-.simple-Immich-settings-block {
+.simple-Immich.settings .setting-block {
 	display: block;
 }
 
-.simple-immich-settings-account-info {
-
-	border-radius: var(--radius-m);
-	gap: var(--size-4-4);
+.simple-immich.settings .account-info {
+	gap: var(--size-4-2);
 	display: grid;
 	justify-content: space-between;
+	min-height: 2rem;
 	align-items: center;
-	grid-template-columns: 160px 1fr 160px;
+	grid-template-columns: 160px 1fr 130px;
+	grid-template-areas: "label input buttons";
 }
 
-.simple-immich-iconButtons {
+.simple-immich .iconButtons {
 	display: flex;
 	justify-content: end;
-	background-color: var(--background-primary);
 	width: fit-content;
 	height: fit-content;
 	justify-self: end;
@@ -187,13 +235,15 @@ input.simple-immich-input::placeholder {
 	gap: var(--size-2-1);
 	border-radius: var(--radius-m);
 	padding-block: var(--size-4-2);
+	padding-inline: var(--size-4-1);
 }
 
-.simple-immich-icon {
-
-	padding-block: var(--size-1-2);
+.simple-immich .icon {
+	padding-block: 0;
 	padding-inline: var(--size-4-2);
+	padding-block: var(--size-2-2);
 	cursor: pointer;
+	display: flex;
 }
 
 /*
