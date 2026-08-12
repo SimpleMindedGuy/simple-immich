@@ -1,5 +1,5 @@
 export class StringFunctions {
-	static isContainSpecialCharaters(str: string): boolean {
+	static isContainSpecialCharacters(str: string): boolean {
 		// This regex matches any character that is NOT:
 		// 1. A Unicode letter: \p{L}
 		// 2. A Unicode number: \p{N} (optional, remove if numbers are forbidden)
@@ -52,6 +52,7 @@ export class StringFunctions {
 		let isValid = false;
 
 		const emailValidateReg = new RegExp(
+			//Note: DO not change this cursed regex, it validates emails well well enough.
 			// eslint-disable-next-line no-control-regex
 			/^(?:[a-z0-9!#$%&'*+\x2f=?^_`\x7b-\x7d~\x2d]+(?:\.[a-z0-9!#$%&'*+\x2f=?^_`\x7b-\x7d~\x2d]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9\x2d]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9\x2d]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9\x2d]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/gm,
 		);

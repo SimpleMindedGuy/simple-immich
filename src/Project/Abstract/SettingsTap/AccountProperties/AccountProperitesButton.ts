@@ -2,7 +2,7 @@
 
 // export type TAccount_Form_Modes = "Read" | "Edit" | "Create";
 
-import type { TButtonLayout, TEventHandlerMap, TBaseButtonMapCollection, IBaseButtonMap } from "src/Base/Abstract/element/trigger/iconButton";
+import type { TButtonLayout, TEventHandlerMap, TBaseButtonMapCollection, IBaseButtonMap } from "src/Base/Abstract/element/trigger/IButton";
 import type { TBaseBooleanMap } from "src/Base/Abstract/util/resolver/booleanResolver";
 
 // export type TAccount_Form_Controls = "External" | "Default";

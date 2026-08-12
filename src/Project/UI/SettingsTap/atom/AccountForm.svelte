@@ -3,7 +3,7 @@
 	import IconsContainer from "src/Base/UI/atom/container/IconsContainer.svelte";
 	import LabeledField from "src/Base/UI/component/input/LabeledField.svelte";
 	import LabeledSecret from "src/Base/UI/component/input/LabeledSecret.svelte";
-	import type { IAccountForm } from "src/Project/Abstract/SettingsTap/AccountProperties/FormActions";
+	import type { IAccountForm } from "src/Project/Abstract/SettingsTap/AccountProperties/AccountPropertiesFromAction";
 
 	let {
 		app,

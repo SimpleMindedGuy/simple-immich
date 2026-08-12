@@ -4,16 +4,19 @@
 	import IconsContainer from "src/Base/UI/atom/container/IconsContainer.svelte";
 	import type { IServerBlock } from "src/Project/Abstract/Settings/account";
 	import AccountProperties from "../component/AccountProperties.svelte";
+	import type { TImmichAccount } from "src/Base/Abstract/pluginSettings";
 
 	const {
 		app,
 		connection,
-		settingsHandler,
+		settingsProcessor,
 		bg = "secondary",
 	}: IServerBlock = $props();
 
 	// 1. Change the type to the Component class
 	let accountComponent: AccountProperties | null = $state(null);
+
+	let Accounts: Array<TImmichAccount> = [];
 
 	const nextBg: BackgroundClass = GetNextBackgroundClass(bg);
 </script>
@@ -30,7 +33,7 @@
 	<AccountProperties
 		bind:this={accountComponent}
 		{app}
-		{settingsHandler}
+		{settingsProcessor}
 		{connection}
 		formFunction="Create"
 		bg={nextBg}
@@ -38,10 +41,10 @@
 		externalController={true}
 	/>
 
-	{#each connection.Accounts as account (account.Id)}
+	{#each Accounts as account (account.Id)}
 		<AccountProperties
 			{app}
-			{settingsHandler}
+			{settingsProcessor}
 			{account}
 			{connection}
 			formFunction="Update"

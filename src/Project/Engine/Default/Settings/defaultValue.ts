@@ -1,12 +1,13 @@
+import type { ISimpleImmichSettings } from "src/Base/Abstract/pluginSettings";
 
-import { type ISimpleImmichSettings } from "src/core/data/base/pluginSettings";
 
 
 export const DEFAULT_SETTINGS: ISimpleImmichSettings = {
-	mySetting: 'default',
+	MySetting: 'default',
 	ImageSize: 300,
-	activeAccount: null,
+	ActiveAccount: null,
 	Connections: [],
-	nextId: 1,
+	Accounts: [],
+	NextId: 1,
 }
 

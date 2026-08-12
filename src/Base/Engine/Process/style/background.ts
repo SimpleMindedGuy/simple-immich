@@ -1,4 +1,4 @@
-import type { BackgroundClass, BackgroundValue } from "src/core/data/base/style/background"
+import type { BackgroundClass, BackgroundValue } from "src/Base/Abstract/style/background"
 
 
 export function GetNextBackgroundClass(bg: BackgroundClass): BackgroundClass {

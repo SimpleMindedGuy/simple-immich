@@ -1,99 +1,32 @@
-import type { App } from "obsidian";
+import { type App } from "obsidian";
+import { SecretsProcessor } from "../../Process/util/secretsProcessor";
 
 export class SecretsManager {
 	private _app: App;
+	private _SecretsProcessor: SecretsProcessor
 
 	constructor(app: App) {
 		this._app = app;
+		this._SecretsProcessor = new SecretsProcessor(this._app);
 	}
 
-	public async IsExit(label: string) {
-		if (!this._app) {
-			throw new Error("App Object is required for SecretsManager.");
-		}
-
-		try {
-			const isExists = this._app.secretStorage.getSecret(label);
-			return isExists ? true : false;
-		} catch (ex) {
-			this.LogError(ex);
-		}
+	public IsExit(label: string) {
+		return this._SecretsProcessor.IsExit(label);
 	}
 
-	public async Get(label: string): Promise<string | null | undefined> {
-
-		if (!this._app) {
-			throw new Error("App Object is required for SecretsManager.");
-		}
-		try {
-			const isExists = await this.IsExit(label);
-
-			if (isExists) {
-				throw new Error(
-					"Failed To Create Secrete : Secrete Already Exists",
-				);
-			}
-			return this._app.secretStorage.getSecret(label)!;
-		} catch (ex) {
-			this.LogError(ex);
-		}
+	public GetByLabel(label: string): string | null | undefined {
+		return this._SecretsProcessor.GetByLabel(label);
 	}
 
-	public async Create(secret: string, label: string): Promise<void> {
-		if (!this._app) {
-			throw new Error("App Object is required for SecretsManager.");
-		}
-		try {
-			const isExists = await this.IsExit(label);
-
-			if (isExists) {
-				throw new Error(
-					"Failed To Create Secrete : Secrete Already Exists",
-				);
-			}
-			this._app.secretStorage.setSecret(secret, label);
-		} catch (ex) {
-			this.LogError(ex);
-		}
+	public Create(secret: string, label: string): void {
+		return this._SecretsProcessor.Create(secret, label);
 	}
 
-	public async Update(secret: string, label: string) {
-		if (!this._app) {
-			throw new Error("App Object is required for SecretsManager.");
-		}
-		try {
-			const isExists = await this.IsExit(label);
-
-			if (!isExists) {
-				throw new Error(
-					"Failed To Update Secrete : Secrete Dose Exist",
-				);
-			}
-			this._app.secretStorage.setSecret(secret, label);
-		} catch (ex) {
-			this.LogError(ex);
-		}
+	public Update(secret: string, label: string) {
+		return this._SecretsProcessor.Update(secret, label);
 	}
 
-	public async List(label: string) {
-		if (!this._app) {
-			throw new Error("App Object is required for SecretsManager.");
-		}
-		try {
-			const isExists = await this.IsExit(label);
-
-			if (!isExists) {
-				throw new Error(
-					"Failed To Update Secrete : Secrete Dose Exist",
-				);
-			}
-			return this._app.secretStorage.listSecrets();
-		} catch (ex) {
-			this.LogError(ex);
-		}
-	}
-
-	private LogError(msg: string) {
-		throw new Error(`Secrets Manager : ${msg}`);
+	public List() {
+		return this._SecretsProcessor.List();
 	}
 }

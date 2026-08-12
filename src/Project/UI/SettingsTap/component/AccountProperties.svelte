@@ -6,14 +6,14 @@
 		slideInParams,
 		slideOutParams,
 	} from "src/Base/Engine/Default/style/transitions/slide";
-	import type { IAccountProperties } from "src/Project/Abstract/SettingsTap/AccountProperties/FormActions";
 	import type { IAccountPropertiesController } from "src/Project/Abstract/SettingsTap/AccountProperties/StateManager";
-	import { AccountStateManager } from "src/Project/Engine/Process/SettingsTap/AccountProperties/state.svelte";
+	import type { IAccountFormProperties } from "src/Project/Abstract/SettingsTap/AccountProperties/AccountPropertiesFromAction";
+	import { AccountStateService } from "src/Project/Engine/Service/SettingsTap/AccountProperties/AccountService";
 
-	const props: IAccountProperties = $props();
+	const props: IAccountFormProperties = $props();
 
 	export const Manager: IAccountPropertiesController =
-		AccountStateManager(props);
+		new AccountStateService(props);
 </script>
 
 {#if !Manager.State.isHidden}

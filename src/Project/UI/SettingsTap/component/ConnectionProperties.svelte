@@ -2,17 +2,17 @@
 	import type {
 		TBaseEventHandler,
 		TBaseButton,
-	} from "src/Base/Abstract/element/trigger/iconButton";
-	import type { ImmichConnection } from "src/Base/Abstract/pluginSettings";
+	} from "src/Base/Abstract/element/trigger/IButton";
+	import type { IImmichConnection } from "src/Base/Abstract/pluginSettings";
 	import type { BackgroundClass } from "src/Base/Abstract/style/background";
 	import { GetNextBackgroundClass } from "src/Base/Engine/Process/style/background";
 	import IconsContainer from "src/Base/UI/atom/container/IconsContainer.svelte";
 	import Feild from "src/Base/UI/atom/input/Feild.svelte";
-	import type { SettingsHandler } from "src/Project/Engine/Process/Settings/SettingsHandler";
+	import type { SettingsProcessor } from "src/Project/Engine/Process/Settings/SettingsProcecssor";
 
 	interface IConnectionInputSection {
-		settingsHandler: SettingsHandler;
-		connection?: ImmichConnection | null;
+		settingsProcessor: SettingsProcessor;
+		connection?: IImmichConnection | null;
 		title?: string | null;
 		url?: string;
 		formFunction: string;
@@ -20,7 +20,7 @@
 	}
 
 	let {
-		settingsHandler,
+		settingsProcessor,
 		title = null,
 		connection = null,
 		formFunction: formAction,
@@ -32,7 +32,7 @@
 	let isEditing = $state(false);
 
 	let Create = async (event: MouseEvent) => {
-		await settingsHandler.CreateConnection(urlInput, event);
+		await settingsProcessor.CreateConnection(connection!);
 	};
 
 	let Update = async (event: MouseEvent | PointerEvent) => {
@@ -44,7 +44,7 @@
 			url: urlInput,
 		};
 
-		await settingsHandler.UpdateConnection(updatedConnection, event);
+		await settingsProcessor.UpdateConnection(updatedConnection);
 		isEditing = !isEditing;
 	};
 
@@ -52,7 +52,7 @@
 		if (!connection) {
 			return;
 		}
-		await settingsHandler.DeleteConnection(connection.Id!, event);
+		await settingsProcessor.DeleteConnection(connection.Id!);
 	};
 
 	const actionHandlers = new Map<string, TBaseEventHandler>([

@@ -1,6 +1,6 @@
 import { Notice } from "obsidian";
 import type { ImmichConnection, TImmichAccount } from "src/Base/Abstract/pluginSettings";
-import type { SettingsHandler } from "../../Settings/SettingsHandler";
+import type { SettingsHandler } from "../../../Process/Settings/SettingsHandler";
 
 
 export interface IAccountFormRequest {

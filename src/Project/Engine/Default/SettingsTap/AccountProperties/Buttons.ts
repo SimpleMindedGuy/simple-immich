@@ -1,4 +1,4 @@
-import type { TAccount_Form_Button_Map, TAccount_Form_Layout_Collection, TAccount_Form_Button_Map_Collection } from "src/Project/Abstract/SettingsTap/AccountProperties/IconButton"
+import type { TAccount_Form_Button_Map, TAccount_Form_Layout_Collection, TAccount_Form_Button_Map_Collection } from "src/Project/Abstract/SettingsTap/AccountProperties/AccountProperitesButton"
 
 
 const Submit_Create_Button_Map: TAccount_Form_Button_Map = {

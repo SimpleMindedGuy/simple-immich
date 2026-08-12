@@ -1,11 +1,10 @@
 import type { App } from "obsidian";
-import type { IComponentController } from "src/Base/Abstract/element/controller";
+import type { IComponentProcessor } from "src/Base/Abstract/element/controller";
 import type { TImmichAccount } from "src/Base/Abstract/pluginSettings";
 import type { BackgroundClass } from "src/Base/Abstract/style/background";
-import type { TAccount_Form_Layout, TAction_Form_Commands_Map } from "./IconButton";
-import type { TBaseButton } from "src/Base/Abstract/element/trigger/iconButton";
+import type { TAccount_Form_Layout, TAction_Form_Commands_Map } from "./AccountProperitesButton";
+import type { TBaseButton } from "src/Base/Abstract/element/trigger/IButton";
 
-export type IAccountPropertiesController = IComponentController<TAccountPropertiesMeta, TAccountPropertiesState, TAction_Form_Commands_Map>
 
 export type TAccountPropertiesState = {
 	isEditing: boolean,
@@ -27,3 +26,5 @@ export type TAccountPropertiesMeta = {
 	displayAnimation: boolean,
 	externalController: boolean,
 }
+
+export type IAccountPropertiesController = IComponentProcessor<TAccountPropertiesMeta, TAccountPropertiesState, TAction_Form_Commands_Map>

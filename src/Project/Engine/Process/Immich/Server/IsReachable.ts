@@ -9,10 +9,10 @@ import { ApiClient } from "src/Base/Engine/Process/util/apiClient";
 
 const serverUnreachableResponse: Result<null> = {
 	IsError: true,
-	Message: "Server Unreachable",
+	Messages: ["Server Unreachable"],
 	Error: {
 		Code: 400,
-		Message: "Invalid Request."
+		Messages: ["Invalid Request."]
 	}
 }
 
@@ -44,7 +44,7 @@ export async function IsReachable(baseUrl: string | URL) {
 
 	const result: Result<ServerPingResponse> = {
 		IsError: false,
-		Message: "Server reachable",
+		Messages: ["Server reachable"],
 		Data: response
 	}
 

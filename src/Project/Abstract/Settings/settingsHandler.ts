@@ -1,4 +1,4 @@
-import type { ISimpleImmichSettings } from "src/core/data/base/pluginSettings";
+import type { ISimpleImmichSettings } from "src/Base/Abstract/pluginSettings";
 
 export type TSaveSettings = (
 	newSettings: ISimpleImmichSettings,

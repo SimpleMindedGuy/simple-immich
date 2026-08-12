@@ -1,9 +1,10 @@
 import type { AlbumResponseDto } from "@immich/sdk";
 import { hasUncaughtExceptionCaptureCallback } from "process";
-import type { Result } from "src/core/data/base/result";
-import { type IApiClientRequest, ApiMethods } from "src/core/data/base/util/apiClient";
-import { ApiClient } from "src/core/engine/process/util/apiClient";
 import { ApiEndPoints } from "../../../../Engine/Default/Immich/endPoints";
+import { ApiMethods, type IApiClientRequest } from "src/Base/Abstract/util/apiClient";
+import { ApiClient } from "src/Base/Engine/Process/util/apiClient";
+import type { Result } from "src/Base/Abstract/result";
+
 
 export interface AlbumGetRequest {
 	baseUrl: string | URL,
@@ -70,7 +71,7 @@ export async function AlbumGetAll(request: AlbumGetRequest) {
 
 	const Result: Result<Array<AlbumResponseDto>> = {
 		Data: response,
-		Message: "Albums Retrieved Successfully",
+		Messages: ["Albums Retrieved Successfully"],
 		IsError: false,
 
 	};

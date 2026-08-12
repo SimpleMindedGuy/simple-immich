@@ -16,10 +16,9 @@ export interface IBaseEvent<T> {
 }
 
 
-export type TbaseEvent =
-	{
-		[eventName in TEvents]?: TBaseEventHandler
-	}
+export type TbaseEvent = {
+	[eventName in TEvents]?: TBaseEventHandler
+}
 
 
 export type TBaseEventMap<Commands extends string> = {

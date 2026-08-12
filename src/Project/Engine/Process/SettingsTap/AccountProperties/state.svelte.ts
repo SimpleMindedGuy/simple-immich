@@ -2,7 +2,7 @@ import type { TBaseButton } from "src/Base/Abstract/element/trigger/iconButton";
 import { GetNextBackgroundClass } from "src/Base/Engine/Process/style/background";
 import { type IResolveButtonsListRequest, ResolveButtonsList } from "src/Base/Engine/Process/util/resolver/buttonResolver";
 import { Account_Form_Icon_Collection, Account_Form_Layout_Collection } from "../../../../Engine/Default/SettingsTap/AccountProperties/iconButtons";
-import { AccountSettingHandler, type IAccountRequest } from "./submitHandler";
+import { AccountSettingHandler, type IAccountRequest } from "../../../Service/SettingsTap/AccountProperties/submitHandler";
 import type { TImmichAccount } from "src/Base/Abstract/pluginSettings";
 import type { IAccountProperties } from "src/Project/Abstract/SettingsTap/AccountProperties/FormActions";
 import type { TAction_Form_Commands_Map, TAccount_Form_BooleanMap } from "src/Project/Abstract/SettingsTap/AccountProperties/IconButton";

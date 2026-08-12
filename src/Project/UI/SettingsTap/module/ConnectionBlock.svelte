@@ -8,7 +8,7 @@
 	const {
 		app,
 		connection,
-		settingsHandler,
+		settingsProcessor,
 		bg = "secondary",
 	}: IServerBlock = $props();
 
@@ -17,11 +17,11 @@
 
 <div class="container connection bg-{bg}">
 	<ConnectionProperties
-		{settingsHandler}
+		{settingsProcessor}
 		{connection}
 		formFunction={"UPDATE"}
 		{bg}
 	/>
 
-	<AccountBlock {app} {settingsHandler} {connection} bg={nextBg} />
+	<AccountBlock {app} {settingsProcessor} {connection} bg={nextBg} />
 </div>

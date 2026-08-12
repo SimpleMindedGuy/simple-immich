@@ -1,40 +1,34 @@
 
-export type TImmichAccount = (ImmichEmailAccount | ImmichTokenAccount) & {
-	Id: number | null
+export type TImmichAccount = (IImmichEmailAccount | IImmichTokenAccount) & {
+	Id: number | null;
+	ConnectionId: number
 };
 
-export interface ImmichTokenAccount {
+export interface IImmichTokenAccount {
 
 	IsApi: true;
 	ApiKey: string | null;
 }
 
-export interface ImmichEmailAccount {
+export interface IImmichEmailAccount {
 	IsApi: false;
 	Email: string | null;
 	Password: string | null;
 }
 
-export interface ImmichConnection {
+export interface IImmichConnection {
 	Id: number;
 	Url: string | null;
-	Accounts: Array<TImmichAccount>
 }
 
 
 export interface ISimpleImmichSettings {
 	MySetting: string;
 	ImageSize: number;
-	Connections: Array<ImmichConnection>
 	ActiveAccount: TImmichAccount | number | null,
+	Connections: Array<IImmichConnection>
+	Accounts: Array<TImmichAccount>
 	NextId: number;
 }
 
 
-export const DEFAULT_SETTINGS: ISimpleImmichSettings = {
-	MySetting: 'default',
-	ImageSize: 300,
-	ActiveAccount: null,
-	Connections: [],
-	NextId: 1,
-}

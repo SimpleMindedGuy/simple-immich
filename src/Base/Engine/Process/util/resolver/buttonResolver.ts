@@ -1,4 +1,4 @@
-import { type TBaseMapCollection, type TBaseEventHandlerMap, type TBaseButton, BaseButton, type TGenericButtonMap, type IBaseButtonVariantsMap, type TGenericEventHandlerMap, type TEvents } from "src/Base/Abstract/element/trigger/iconButton";
+import { type TBaseMapCollection, type TBaseEventHandlerMap, type TBaseButton, BaseButton, type TGenericButtonMap, type IBaseButtonVariantsMap, type TGenericEventHandlerMap, type TEvents } from "src/Base/Abstract/element/trigger/IButton";
 import { ResolveBooleanExpression } from "./booleanResolver";
 import { PropertyResolver } from "./propertyResolver";
 import type { IBooleanResolverRequest, IResolverRequest, TGnericBooleanMap, TresolverMap } from "src/Base/Abstract/util/resolver/booleanResolver";
