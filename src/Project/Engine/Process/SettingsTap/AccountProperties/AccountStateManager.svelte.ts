@@ -1,81 +1,54 @@
-import type { TBaseButton } from "src/Base/Abstract/element/trigger/iconButton";
+import type { TBaseButton, TBaseEventHandlerMap } from "src/Base/Abstract/element/trigger/IButton";
 import { GetNextBackgroundClass } from "src/Base/Engine/Process/style/background";
 import { type IResolveButtonsListRequest, ResolveButtonsList } from "src/Base/Engine/Process/util/resolver/buttonResolver";
-import { Account_Form_Icon_Collection, Account_Form_Layout_Collection } from "../../../../Engine/Default/SettingsTap/AccountProperties/iconButtons";
-import { AccountSettingHandler, type IAccountRequest } from "../../../Service/SettingsTap/AccountProperties/submitHandler";
+import { Account_Form_Icon_Collection, Account_Form_Layout_Collection } from "../../../Default/SettingsTap/AccountProperties/Buttons";
 import type { TImmichAccount } from "src/Base/Abstract/pluginSettings";
-import type { IAccountProperties } from "src/Project/Abstract/SettingsTap/AccountProperties/FormActions";
-import type { TAction_Form_Commands_Map, TAccount_Form_BooleanMap } from "src/Project/Abstract/SettingsTap/AccountProperties/IconButton";
+import type { TAction_Form_Commands_Map, TAccount_Form_BooleanMap } from "src/Project/Abstract/SettingsTap/AccountProperties/AccountProperitesButton";
 import type { IAccountPropertiesController, TAccountPropertiesState, TAccountPropertiesMeta } from "src/Project/Abstract/SettingsTap/AccountProperties/StateManager";
+import { SettingsService, type IAccountRequest } from "src/Project/Engine/Service/Settings/SettingsService";
+import type { IAccountFormProperties } from "src/Project/Abstract/SettingsTap/AccountProperties/AccountPropertiesFromAction";
+import type { TGnericBooleanMap } from "src/Base/Abstract/util/resolver/booleanResolver";
 
 
 
-export const AccountStateManager = (props: IAccountProperties): IAccountPropertiesController => {
+export class AccountStateController {
+
+	private _settingsService: SettingsService
 
 
-	const {
-		app,
-		connection,
-		account,
-		settingsHandler,
-		formFunction: formMode,
-		displayAnimation = true,
-		bg = "primary",
-		hidden = false,
-		editing = false,
-		externalController = false,
-	} = props;
+	constructor(settingsService: SettingsService) {
 
-	const handler: AccountSettingHandler = new AccountSettingHandler(settingsHandler, connection);
-	const nextBg = GetNextBackgroundClass(bg);
-
-	function ToggleEditing(event: MouseEvent | PointerEvent): boolean {
-		if (event) event.preventDefault();
-		State.isEditing = !State.isEditing;
-		return State.isEditing;
-	}
-	function ToggleHidden(event: MouseEvent | PointerEvent) {
-		if (event) event.preventDefault();
-		State.isHidden = !State.isHidden;
-		// return State.isHidden;
-	}
-
-	function ToggleAccountType(event: MouseEvent | PointerEvent): boolean {
-		if (event) event.preventDefault();
-		State.isApi = !State.isApi;
-		return State.isApi;
+		this._settingsService = settingsService;
 	}
 
 
-	async function Create(event: MouseEvent | PointerEvent) {
-		if (event) event.preventDefault();
-		if (!State.account) return;
-		const request: IAccountRequest = { account: State.account }
-		handler.Create(request);
+	ToggleEditing(isEditing: boolean): boolean {
+		return !isEditing;
+	}
+	ToggleHidden(isHidden: boolean): boolean {
+		return !isHidden;
 	}
 
-	async function Update(event: MouseEvent | PointerEvent) {
-		if (event) event.preventDefault();
-		if (!State.account) return;
-		const request: IAccountRequest = { account: State.account }
-		handler.Update(request);
+	ToggleAccountType(isApi: boolean): boolean {
+		return !isApi;
 	}
 
-	async function Delete(event: MouseEvent | PointerEvent): Promise<unknown> {
-		if (event) event.preventDefault();
-		if (!State.account) return;
-		const request: IAccountRequest = { account: State.account }
-		handler.Delete(request);
+
+	Create(request: IAccountRequest) {
+		return this._settingsService.CreateAccount(request);
 	}
 
-	function Reset() {
-		State.secret = account?.IsApi ? (account.ApiKey ?? null) : (account?.Password ?? null);
-		State.email = account?.IsApi ? null : (account?.Email ?? null);
-	};
+	Update(request: IAccountRequest) {
+		return this._settingsService.UpdateAccount(request);
+	}
+
+	Delete(request: IAccountRequest): Promise<unknown> {
+		return this._settingsService.DeleteAccount(request);
+	}
 
 
-	const getFormIcons = (): Array<TBaseButton> => {
 
+	getFormIcons(formMode: string, BooleanMap: TGnericBooleanMap, CommandsMap: TBaseEventHandlerMap): Array<TBaseButton> {
 		// Pick the template based on UI state
 		const ResolveFormModeButtonsRequest: IResolveButtonsListRequest = {
 			Layout: Account_Form_Layout_Collection,
@@ -87,7 +60,83 @@ export const AccountStateManager = (props: IAccountProperties): IAccountProperti
 		const ButtonList: Array<TBaseButton> = ResolveButtonsList(ResolveFormModeButtonsRequest)
 
 		return ButtonList;
+	};
 
+}
+
+
+export const AccountStateProcessor = (props: IAccountFormProperties): IAccountPropertiesController => {
+
+
+	const {
+		app,
+		connection,
+		account,
+		settingsProcessor: settingsHandler,
+		formFunction: formMode,
+		displayAnimation = true,
+		bg = "primary",
+		hidden = false,
+		editing = false,
+		externalController = false, } = props;
+
+	const handler: SettingsService = new SettingsService(settingsHandler);
+	const nextBg = GetNextBackgroundClass(bg);
+
+	function ToggleEditing(event: MouseEvent | PointerEvent): boolean {
+		if (event) event.preventDefault();
+		State.isEditing = !State.isEditing;
+		return State.isEditing;
+	}
+	function ToggleHidden(event: MouseEvent | PointerEvent) {
+		if (event) event.preventDefault();
+		State.isHidden = !State.isHidden;
+		return State.isHidden;
+	}
+
+	function ToggleAccountType(event: MouseEvent | PointerEvent): boolean {
+		if (event) event.preventDefault();
+		State.isApi = !State.isApi;
+		return State.isApi;
+	}
+
+
+	async function Create(event: MouseEvent | PointerEvent) {
+		if (event) event.preventDefault();
+		const request: IAccountRequest = { connection: connection, account: State.account, }
+		return handler.CreateAccount(request);
+	}
+
+	async function Update(event: MouseEvent | PointerEvent) {
+		if (event) event.preventDefault();
+		const request: IAccountRequest = { connection: connection, account: State.account, }
+		return handler.UpdateAccount(request);
+	}
+
+	async function Delete(event: MouseEvent | PointerEvent): Promise<unknown> {
+		if (event) event.preventDefault();
+		const request: IAccountRequest = { connection: connection, account: State.account, }
+		return handler.DeleteAccount(request);
+	}
+
+	function Reset() {
+		State.secret = account?.IsApi ? (account.ApiKey ?? null) : (account?.Password ?? null);
+		State.email = account?.IsApi ? null : (account?.Email ?? null);
+	};
+
+
+	function getFormIcons(): Array<TBaseButton> {
+		// Pick the template based on UI state
+		const ResolveFormModeButtonsRequest: IResolveButtonsListRequest = {
+			Layout: Account_Form_Layout_Collection,
+			ButtonCollection: Account_Form_Icon_Collection,
+			CommandsMap: CommandsMap,
+			BooleanMap: BooleanMap,
+			formMode: formMode
+		}
+		const ButtonList: Array<TBaseButton> = ResolveButtonsList(ResolveFormModeButtonsRequest)
+
+		return ButtonList;
 	};
 
 
@@ -114,8 +163,8 @@ export const AccountStateManager = (props: IAccountProperties): IAccountProperti
 		get account(): TImmichAccount {
 			// We use 'this' to point to the reactive proxies above
 			return this.isApi
-				? { Id: account?.Id ?? null, IsApi: true, ApiKey: this.secret }
-				: { Id: account?.Id ?? null, IsApi: false, Email: this.email, Password: this.secret };
+				? { Id: account?.Id ?? null, ConnectionId: connection.Id, IsApi: true, ApiKey: this.secret }
+				: { Id: account?.Id ?? null, ConnectionId: connection.Id, IsApi: false, Email: this.email, Password: this.secret };
 		}
 	})
 
