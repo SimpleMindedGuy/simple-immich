@@ -1,7 +1,8 @@
 import { type App, type Editor, MarkdownView, Modal, Plugin } from "obsidian";
-import { type ISimpleImmichSettings, DEFAULT_SETTINGS } from "src/Base/Abstract/pluginSettings";
-import { SettingsStore } from "src/Project/Engine/Default/Settings/store.svelte";
-import { SimpleImmichSettingsTab } from "src/Project/UI/SettingsTap/setup/SettingsTapHandler";
+import { type ISimpleImmichSettings } from "src/Base/Abstract/pluginSettings";
+import { DEFAULT_SETTINGS } from "src/Project/Engine/Default/Settings/defaultValue";
+import { SettingsStore } from "src/Project/Engine/IO/Settings/store.svelte";
+import { SimpleImmichSettingsTab } from "src/Project/UI/Setup/SettingsTapHandler";
 
 export default class SimpleImmichPlugin extends Plugin {
 	settings: ISimpleImmichSettings;

@@ -1,10 +1,10 @@
-import type { IAccountFormProperties } from "src/Project/Abstract/SettingsTap/AccountProperties/AccountPropertiesFromAction";
 import type { IAccountPropertiesController, TAccountPropertiesMeta, TAccountPropertiesState } from "src/Project/Abstract/SettingsTap/AccountProperties/StateManager";
-import { AccountStateController } from "src/Project/Engine/Process/SettingsTap/AccountProperties/AccountStateManager.svelte";
 import { SettingsService, type IAccountRequest } from "../../Settings/SettingsService";
-import type { TAccount_Form_BooleanMap, TAction_Form_Commands_Map } from "src/Project/Abstract/SettingsTap/AccountProperties/AccountProperitesButton";
 import { GetNextBackgroundClass } from "src/Base/Engine/Process/style/background";
 import type { TImmichAccount } from "src/Base/Abstract/pluginSettings";
+import type { TAction_Form_Commands_Map, TAccount_Form_BooleanMap } from "src/Project/Abstract/SettingsTap/AccountProperties/Button";
+import type { IAccountFormProperties } from "src/Project/Abstract/SettingsTap/AccountProperties/Form";
+import { AccountStateController } from "src/Project/Engine/Process/SettingsTap/AccountProperties/Controller";
 
 
 export class AccountStateService implements IAccountPropertiesController {
@@ -12,11 +12,19 @@ export class AccountStateService implements IAccountPropertiesController {
 	private _processor: AccountStateController;
 	private _props: IAccountFormProperties;
 
-
-
 	Meta: TAccountPropertiesMeta;
-	State: TAccountPropertiesState;
 	Commands: TAction_Form_Commands_Map;
+	State: TAccountPropertiesState = $state(
+		{
+
+			isEditing: false,
+			isHidden: false,
+			isApi: false, email: null,
+			secret: null,
+			get formIcons() { return this._GetFormIcons(); },
+			get account() { return this._GetAccount(); }
+		}
+	);
 
 
 	constructor(props: IAccountFormProperties) {
@@ -42,7 +50,7 @@ export class AccountStateService implements IAccountPropertiesController {
 
 		// eslint-disable-next-line @typescript-eslint/no-this-alias
 		const self = this;
-		this.State = $state({
+		this.State = {
 			isEditing: self._props.editing ?? false,
 			isHidden: self._props.hidden ?? false,
 			isApi: self._props.account?.IsApi ?? false,
@@ -50,7 +58,7 @@ export class AccountStateService implements IAccountPropertiesController {
 			secret: self._props.account?.IsApi ? (self._props.account?.ApiKey ?? null) : (self._props.account?.Password ?? null),
 			get formIcons() { return self._GetFormIcons(); },
 			get account() { return self._GetAccount(); }
-		});
+		};
 
 	}
 
@@ -92,16 +100,12 @@ export class AccountStateService implements IAccountPropertiesController {
 	}
 	private ToggleHidden(event: MouseEvent | PointerEvent): boolean {
 		if (event) event.preventDefault();
-
-
 		this.State.isHidden = this._processor.ToggleEditing(this.State.isHidden);
 		return this.State.isHidden
 	}
 
 	private ToggleAccountType(event: MouseEvent | PointerEvent): boolean {
 		if (event) event.preventDefault();
-
-
 		this.State.isApi = this._processor.ToggleEditing(this.State.isApi);
 		return this.State.isApi;
 	}
@@ -156,7 +160,7 @@ export class AccountStateService implements IAccountPropertiesController {
 		if (this.State.isApi) {
 			const account: TImmichAccount = {
 				Id: this._props.account?.Id ?? null,
-				ConnectionId: this._props.connection.Id,
+				ConnectionId: this._props.connection.Id!,
 				ApiKey: this.State.secret,
 				IsApi: true,
 			}
@@ -167,7 +171,7 @@ export class AccountStateService implements IAccountPropertiesController {
 
 		const account: TImmichAccount = {
 			Id: this._props.account?.Id ?? null,
-			ConnectionId: this._props.connection.Id,
+			ConnectionId: this._props.connection.Id!,
 			IsApi: false,
 			Email: this.State.email,
 			Password: this.State.secret
@@ -180,52 +184,4 @@ export class AccountStateService implements IAccountPropertiesController {
 	}
 
 }
-
-// Public Facade for the UI
-// export function AccountService(props: IAccountFormProperties): IAccountPropertiesController {
-//
-//
-//
-//
-// 	const process = new AccountStateProcessor(new SettingsIO());
-//
-//
-//
-//
-//
-// 	// Svelte 5 reactivity for UI binding
-//
-// 	const State: TAccountPropertiesState = $state({
-// 		isEditing: editing,
-// 		isHidden: hidden,
-// 		isApi: account?.IsApi ?? false,
-// 		email: account?.IsApi ? null : account?.Email ?? null,
-// 		secret: account?.IsApi ? (account?.ApiKey ?? null) : (account?.Password ?? null),
-// 		get formIcons(): Array<TBaseButton> {
-// 			return process.getFormIcons();
-// 		},
-// 		get account(): TImmichAccount {
-// 			// We use 'this' to point to the reactive proxies above
-// 			return this.isApi
-// 				? { Id: account?.Id ?? null, ConnectionId: connection.Id, IsApi: true, ApiKey: this.secret }
-// 				: { Id: account?.Id ?? null, ConnectionId: connection.Id, IsApi: false, Email: this.email, Password: this.secret };
-// 		}
-// 	})
-//
-// 	const Commands = {
-// 		Create: async (e?: Event) => {
-// 			e?.preventDefault();
-// 			return process.createAccount(State.account); // Delegates to Process!
-// 		},
-// 		ToggleEditing: (e?: Event) => {
-// 			e?.preventDefault();
-// 			State.isEditing = !State.isEditing;
-// 		}
-// 	};
-//
-// 	return {
-// 		State,
-// 		Commands,
-// 		Meta
-// 	};
 

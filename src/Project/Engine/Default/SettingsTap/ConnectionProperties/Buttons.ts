@@ -1,4 +1,4 @@
-import type { TConnection_Form_Button_Map, TConnection_Form_Button_Map_Collection, TConnection_Form_Layout_Collection } from "src/Project/Abstract/SettingsTap/ConneectionProperties/ConnectionPropertiesButton"
+import type { TConnection_Form_Button_Map, TConnection_Form_Button_Map_Collection, TConnection_Form_Layout_Collection } from "src/Project/Abstract/SettingsTap/ConneectionProperties/Button"
 
 
 

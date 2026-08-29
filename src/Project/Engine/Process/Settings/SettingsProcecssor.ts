@@ -16,6 +16,21 @@ export class SettingsProcessor {
 		this._SettingsIO = settingsIO
 	}
 
+
+	async GetAllConnections() {
+		return this._SettingsIO.GetConnections();
+	}
+
+	async GetConnectionById(connectionId: number) {
+
+		if (!connectionId) {
+
+			return;
+		}
+		return this._SettingsIO.GetConnectionById(connectionId);
+
+	}
+
 	async CreateConnection(
 		connection: IImmichConnection,
 	): Promise<void> {
@@ -87,6 +102,25 @@ export class SettingsProcessor {
 
 		await this._SettingsIO.UpdateConnection(updatedConnection);
 
+	}
+
+
+	async GetAccountsByConnectionId(connectionId: number) {
+
+		if (!connectionId) {
+			return;
+		}
+		return this._SettingsIO.GetAccountsByConnectionId(connectionId)
+	}
+
+
+
+	async GetAccountsById(accountId: number) {
+
+		if (!accountId) {
+			return;
+		}
+		return this._SettingsIO.GetAccountById(accountId)
 	}
 
 	async CreateAccount(

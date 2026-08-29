@@ -1,11 +1,10 @@
 import type { App } from "obsidian";
-import type { TAccount_Form_Layout } from "./AccountProperitesButton";
 import type { TonSecretChange } from "src/Base/Abstract/element/input/secret";
-import type { TBaseButton } from "src/Base/Abstract/element/trigger/IButton";
+import type { TBaseButton, TBaseEventHandler } from "src/Base/Abstract/element/trigger/IButton";
 import type { TImmichAccount, IImmichConnection } from "src/Base/Abstract/pluginSettings";
 import type { BackgroundClass } from "src/Base/Abstract/style/background";
-import type { TMousehandler } from "src/Project/Abstract/Settings/account";
 import type { SettingsProcessor } from "src/Project/Engine/Process/Settings/SettingsProcecssor";
+import type { TAccount_Form_Layout } from "./Button";
 
 
 
@@ -21,8 +20,8 @@ export interface IAccountForm {
 	externalController?: boolean;
 	formFunction?: TAccount_Form_Layout;
 	onSecretChange?: TonSecretChange;
-	submitHandler?: TMousehandler;
-	toggleEditing?: TMousehandler;
+	submitHandler?: TBaseEventHandler;
+	toggleEditing?: TBaseEventHandler;
 }
 
 

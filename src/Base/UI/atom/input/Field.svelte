@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { IBaseInput } from "src/core/data/base/element/input/feild.svelte";
+	import type { IBaseInput } from "src/Base/Abstract/element/input/feild.svelte";
 
 	let {
 		style,

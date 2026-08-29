@@ -2,8 +2,8 @@
 import { get } from "svelte/store";
 import type { SecretsManager } from "src/Base/Engine/Service/util/secretsManager";
 import type { ISimpleImmichSettings, IImmichConnection, TImmichAccount } from "src/Base/Abstract/pluginSettings";
-import type { TSaveSettings, TLoadSettings } from "src/Project/Abstract/Settings/settingsHandler";
 import { SettingsStore } from "./store.svelte";
+import type { TLoadSettings, TSaveSettings } from "src/Project/Abstract/SettingsTap/SettingsPage/SettingsPage";
 
 export class SettingsIO {
 	private readonly _saveSettings: TSaveSettings;
@@ -23,6 +23,22 @@ export class SettingsIO {
 
 		this.GetSettings();
 
+	}
+
+	async GetConnections(): Promise<Array<IImmichConnection>> {
+
+		return this._Settings.Connections;
+	}
+
+	async GetConnectionById(
+		connectionId: number,
+	) {
+
+		const connection: IImmichConnection | undefined = this._Settings.Connections.find(con => con.Id = connectionId);
+
+		if (connection == undefined) return null;
+
+		return connection
 	}
 
 	async CreateConnection(
@@ -89,6 +105,29 @@ export class SettingsIO {
 		this.SetSettings(newSettings);
 	}
 
+
+
+	async GetAccountById(
+		accountId: number,
+	) {
+
+		const account: TImmichAccount | undefined = this._Settings.Accounts.find(acc => acc.Id === accountId);
+
+		if (account == undefined) return null;
+
+		return account;
+
+	}
+
+
+	async GetAccountsByConnectionId(connectionId: number) {
+		const Accounts: Array<TImmichAccount> = this._Settings.Accounts.filter(acc => acc.ConnectionId == connectionId)
+
+		if (Accounts == undefined) return null;
+
+		return Accounts;
+	}
+
 	async CreateAccount(
 		newAccount: TImmichAccount,
 	) {
@@ -151,43 +190,7 @@ export class SettingsIO {
 
 	}
 
-
-
-	async GetConnectionById(
-		connectionId: number,
-	) {
-
-		const connection: IImmichConnection | undefined = this._Settings.Connections.find(con => con.Id = connectionId);
-
-		if (connection == undefined) return null;
-
-		return connection
-	}
-
-
-	async GetAccountById(
-		accountId: number,
-	) {
-
-		const account: TImmichAccount | undefined = this._Settings.Accounts.find(acc => acc.Id === accountId);
-
-		if (account == undefined) return null;
-
-		return account;
-
-	}
-
-
-	async GetAccountsByConnectionId(connectionId: number) {
-		const Accounts: Array<TImmichAccount> = this._Settings.Accounts.filter(acc => acc.ConnectionId == connectionId)
-
-		if (Accounts == undefined) return null;
-
-		return Accounts;
-	}
-
-
-	GetSettings() {
+	private GetSettings() {
 		this._Settings = get(SettingsStore);
 	}
 

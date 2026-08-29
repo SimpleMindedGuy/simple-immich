@@ -2,8 +2,8 @@
 	import type { BackgroundClass } from "src/Base/Abstract/style/background";
 	import { GetNextBackgroundClass } from "src/Base/Engine/Process/style/background";
 	import type { IServerBlock } from "src/Project/Abstract/Settings/account";
-	import ConnectionProperties from "../component/ConnectionProperties.svelte";
-	import AccountBlock from "./AccountBlock.svelte";
+	import ConnectionProperties from "../Component/ConnectionProperties.svelte";
+	import AccountBlock from "../Modules/AccountBlock.svelte";
 
 	const {
 		app,
@@ -19,9 +19,15 @@
 	<ConnectionProperties
 		{settingsProcessor}
 		{connection}
-		formFunction={"UPDATE"}
+		formFunction={"Update"}
 		{bg}
 	/>
 
-	<AccountBlock {app} {settingsProcessor} {connection} bg={nextBg} />
+	<AccountBlock
+		{app}
+		{settingsProcessor}
+		{connection}
+		bg={nextBg}
+		accounts={[]}
+	/>
 </div>

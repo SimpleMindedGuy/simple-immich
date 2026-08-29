@@ -43,6 +43,32 @@ export class SettingsService {
 		this.settingsHandler = settingsHandler;
 	}
 
+
+	async GetAccountsByConnectionId(request: IConnectionRequest) {
+
+		const { connection } = request;
+
+
+		if (!this.settingsHandler) {
+			throw this.missingHandlerResponse();
+		}
+
+		if (!connection) {
+
+			throw this.missingConnectionResponse(connection);
+		}
+
+
+		if (!connection.Id) {
+
+			throw this.missingHandlerResponse();
+		}
+
+
+		return await this.settingsHandler.GetAccountsByConnectionId(connection.Id)
+
+	}
+
 	async CreateAccount(request: IAccountRequest) {
 
 		const { account, connection } = request;
@@ -53,10 +79,17 @@ export class SettingsService {
 		}
 
 
+		if (!connection.Id) {
+
+			throw this.missingHandlerResponse();
+		}
+
+
 		const newAccount: TImmichAccount = {
 			...account,
 			Id: -1,
 		};
+
 
 		return await this.settingsHandler.CreateAccount(connection.Id, newAccount);
 	}
@@ -90,6 +123,14 @@ export class SettingsService {
 		return await this.settingsHandler.DeleteAccount(account.Id!);
 	}
 
+	async GetAllConnections() {
+
+		if (!this.settingsHandler) {
+			throw this.missingHandlerResponse();
+		}
+		return this.settingsHandler.GetAllConnections();
+	}
+
 	async CreateConnection(request: IConnectionRequest) {
 		const { connection } = request;
 
@@ -109,6 +150,10 @@ export class SettingsService {
 
 		const connectionId = connection.Id;
 
+		if (!connectionId) {
+
+			throw this.missingHandlerResponse();
+		}
 		return await this.settingsHandler.DeleteConnection(connectionId)
 	}
 
@@ -122,6 +167,11 @@ export class SettingsService {
 
 		const connectionId = connection.Id;
 
+
+		if (!connectionId) {
+
+			throw this.missingHandlerResponse();
+		}
 		return await this.settingsHandler.DeleteConnection(connectionId);
 	}
 
@@ -129,6 +179,15 @@ export class SettingsService {
 		const error: Error = new Error("SettingsHandler Was Not provided");
 
 		new Notice("SettingsHandler Was Not provided");
+		return error;
+
+	}
+
+
+	private missingConnectionResponse(connection?: IImmichConnection) {
+		const error: Error = new Error(`connection Was Not provided, ${connection}`);
+
+		new Notice(Error.toString());
 		return error;
 
 	}

@@ -1,4 +1,6 @@
 
+
+
 export type TImmichAccount = (IImmichEmailAccount | IImmichTokenAccount) & {
 	Id: number | null;
 	ConnectionId: number

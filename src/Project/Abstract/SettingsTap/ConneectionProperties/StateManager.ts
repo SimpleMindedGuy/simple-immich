@@ -2,27 +2,35 @@ import type { App } from "obsidian";
 import type { IComponentProcessor } from "src/Base/Abstract/element/controller";
 import type { IImmichConnection, TImmichAccount } from "src/Base/Abstract/pluginSettings";
 import type { BackgroundClass } from "src/Base/Abstract/style/background";
-import type { TConnection_Form_Layout, TConnection_Form_Commands_Map } from "./ConnectionPropertiesButton";
-import type { TBaseButton } from "src/Base/Abstract/element/trigger/IButton";
+import type { TBaseButton, TBaseEventHandler } from "src/Base/Abstract/element/trigger/IButton";
 import type { SettingsProcessor } from "src/Project/Engine/Process/Settings/SettingsProcecssor";
-import type { TMousehandler } from "../../Settings/account";
-
-export type IAccountPropertiesController = IComponentProcessor<TConnectionPropertiesMeta, TConnectionPropertiesState, TConnection_Form_Commands_Map>
+import type { TConnection_Form_Commands_Map, TConnection_Form_Layout } from "./Button";
 
 
+
+export interface IConnectionInputSection {
+	settingsProcessor: SettingsProcessor;
+	formFunction: string;
+
+	bg?: BackgroundClass;
+	url?: string;
+	title?: string | null;
+	connection?: IImmichConnection | null;
+}
 
 export interface IConnectionProperties {
 
 	// Required
-	connection: IImmichConnection;
-	settingsHandler: SettingsProcessor;
 	formFunction: TConnection_Form_Layout;
+	settingsProcessor: SettingsProcessor;
 
 
 	// Optional
-	app?: App;
 	bg?: BackgroundClass;
+	app?: App;
+	title?: string;
 	editing?: boolean;
+	connection?: IImmichConnection;
 }
 
 export type TConnectionPropertiesState = {
@@ -30,8 +38,9 @@ export type TConnectionPropertiesState = {
 	// Required
 	isEditing: boolean,
 	formIcons: Array<TBaseButton>,
-	connection: IImmichConnection,
+	connection: IImmichConnection | null,
 	accounts: Array<TImmichAccount>
+	inputUrl: string,
 
 	// Optional
 }
@@ -46,7 +55,9 @@ export type TConnectionPropertiesMeta = {
 
 	// Optional
 	app?: App,
+	title?: string,
 	originalConnection?: IImmichConnection,
+
 }
 
 
@@ -62,11 +73,12 @@ export interface IConnectionForm {
 	app?: App;
 	buttons?: Array<TBaseButton>;
 	formFunction?: TConnection_Form_Layout;
-	submitHandler?: TMousehandler;
-	toggleEditing?: TMousehandler;
+	submitHandler?: TBaseEventHandler;
+	toggleEditing?: TBaseEventHandler;
 
 }
 
 
 
+export type IConnectionPropertiesController = IComponentProcessor<TConnectionPropertiesMeta, TConnectionPropertiesState, TConnection_Form_Commands_Map>
 

@@ -2,21 +2,19 @@
 	import type { BackgroundClass } from "src/Base/Abstract/style/background";
 	import { GetNextBackgroundClass } from "src/Base/Engine/Process/style/background";
 	import IconsContainer from "src/Base/UI/atom/container/IconsContainer.svelte";
-	import type { IServerBlock } from "src/Project/Abstract/Settings/account";
-	import AccountProperties from "../component/AccountProperties.svelte";
-	import type { TImmichAccount } from "src/Base/Abstract/pluginSettings";
+	import type { IAccountBlock } from "src/Project/Abstract/Settings/account";
+	import AccountProperties from "../Component/AccountProperties.svelte";
 
 	const {
 		app,
 		connection,
 		settingsProcessor,
 		bg = "secondary",
-	}: IServerBlock = $props();
+		accounts = [],
+	}: IAccountBlock = $props();
 
 	// 1. Change the type to the Component class
 	let accountComponent: AccountProperties | null = $state(null);
-
-	let Accounts: Array<TImmichAccount> = [];
 
 	const nextBg: BackgroundClass = GetNextBackgroundClass(bg);
 </script>
@@ -41,7 +39,7 @@
 		externalController={true}
 	/>
 
-	{#each Accounts as account (account.Id)}
+	{#each accounts as account (account.Id)}
 		<AccountProperties
 			{app}
 			{settingsProcessor}

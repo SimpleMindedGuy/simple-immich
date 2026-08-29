@@ -9,10 +9,10 @@
 	const nextBg: BackgroundClass = GetNextBackgroundClass(bg);
 </script>
 
-{#if account?.isApi}
+{#if account?.IsApi}
 	<div class="account-info">
 		<p>API Key</p>
-		<p>{account?.apiKey ?? ""}</p>
+		<p>{account?.ApiKey ?? ""}</p>
 
 		{#if iconButtons.length > 0}
 			<IconsContainer bg={nextBg} icons={iconButtons} />

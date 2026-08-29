@@ -1,14 +1,12 @@
 import { mount, unmount } from "svelte";
 import type SimpleImmichPlugin from "main";
 import { PluginSettingTab, App } from "obsidian";
-import { SettingsProcessor } from "../../../Engine/Process/Settings/SettingsProcecssor";
-import SettingsPage from "../page/page.svelte"
 import { SecretsManager } from "src/Base/Engine/Service/util/secretsManager";
-import type { ISettingsTabProps } from "../../../Abstract/Settings/account";
-import type { TSaveSettings, TLoadSettings } from "../../../Abstract/Settings/settingsHandler";
 import type { ISimpleImmichSettings } from "src/Base/Abstract/pluginSettings";
 import { SettingsIO } from "src/Project/Engine/IO/Settings/SettingsIO";
-
+import { SettingsProcessor } from "src/Project/Engine/Process/Settings/SettingsProcecssor";
+import SettingsPage from "../Page/SettingsTap.svelte";
+import type { ISettingsTabProps, TLoadSettings, TSaveSettings } from "src/Project/Abstract/SettingsTap/SettingsPage/SettingsPage";
 
 export class SimpleImmichSettingsTab extends PluginSettingTab {
 	private _component: Record<string, unknown>;
@@ -30,10 +28,11 @@ export class SimpleImmichSettingsTab extends PluginSettingTab {
 
 		const props: ISettingsTabProps = {
 			settingsProcessor: this._settingsProcessor,
-			saveSettings: this.saveSettings,
-			loadSettings: this.loadSettings,
-			plugin: this._plugin,
 			app: this.app,
+			bg: "secondary-alt"
+			// saveSettings: this.saveSettings,
+			// loadSettings: this.loadSettings,
+			// plugin: this._plugin,
 		};
 
 		this._component = mount(SettingsPage, {

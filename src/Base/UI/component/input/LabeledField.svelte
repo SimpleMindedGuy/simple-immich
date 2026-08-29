@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { ILabeledFeild } from "src/core/data/base/element/input/labeledFeild";
-	import Feild from "../../atom/input/Feild.svelte";
+	import type { ILabeledFeild } from "src/Base/Abstract/element/input/labeledFeild";
+	import Field from "../../atom/input/Field.svelte";
 
 	let {
 		label,
@@ -25,7 +25,7 @@
 		{label}
 	</p>
 
-	<Feild
+	<Field
 		style="grid-area: input; "
 		class="input labeled-input-input {classes}"
 		bind:value
