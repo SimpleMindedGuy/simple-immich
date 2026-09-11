@@ -65,13 +65,14 @@ export class AccountStateService implements IAccountPropertiesController {
 	private _InitCommands() {
 
 		this.Commands = {
-			Reset: this.Reset,
-			Create: this.Create,
-			Update: this.Update,
-			Delete: this.Delete,
-			Toggle_Edit: this.ToggleEditing,
-			Toggle_Type: this.ToggleAccountType,
-			Toggle_Hidden: this.ToggleHidden,
+			Reset: () => this.Reset(),
+			Create: (e: MouseEvent | PointerEvent) => this.Create(e),
+			Update: (e: MouseEvent | PointerEvent) => this.Update(e),
+			Delete: (e: MouseEvent | PointerEvent) => this.Delete(e),
+			Toggle_Edit: (e: MouseEvent | PointerEvent) => this.ToggleEditing(e),
+			Toggle_Type: (e: MouseEvent | PointerEvent) => this.ToggleAccountType(e),
+			Toggle_Hidden: (e: MouseEvent | PointerEvent) => this.ToggleHidden(e),
+
 		};
 	}
 

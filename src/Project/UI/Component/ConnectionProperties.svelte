@@ -24,11 +24,11 @@
 			</p>
 		{:else if !StateManager.State.isEditing && StateManager.Meta.formMode != "Create"}
 			<p style="grid-column-start: header;">
-				{!StateManager.State.connection?.Url}
+				{StateManager.State.connection?.Url}
 			</p>
 			<IconsContainer
 				bg={StateManager.Meta.nextBg}
-				icons={StateManager.Meta.formMode}
+				icons={StateManager.State.formIcons}
 			/>
 		{:else}
 			<Field

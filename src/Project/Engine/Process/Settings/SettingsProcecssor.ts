@@ -51,12 +51,15 @@ export class SettingsProcessor {
 
 
 		if (!isValidUrl) {
+			console.error("Not valid url")
 			return;
 		}
 
 		const isReachable = await IsReachable(cleanUrl);
 
 		if (!isReachable) {
+
+			console.error("Not reachable")
 			return;
 		}
 

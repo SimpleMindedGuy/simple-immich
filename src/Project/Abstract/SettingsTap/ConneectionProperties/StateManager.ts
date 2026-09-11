@@ -21,7 +21,6 @@ export interface IConnectionInputSection {
 export interface IConnectionProperties {
 
 	// Required
-	formFunction: TConnection_Form_Layout;
 	settingsProcessor: SettingsProcessor;
 
 
@@ -31,6 +30,7 @@ export interface IConnectionProperties {
 	title?: string;
 	editing?: boolean;
 	connection?: IImmichConnection;
+	formFunction?: TConnection_Form_Layout;
 }
 
 export type TConnectionPropertiesState = {

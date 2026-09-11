@@ -36,8 +36,7 @@ export class SimpleImmichSettingsTab extends PluginSettingTab {
 		};
 
 		this._component = mount(SettingsPage, {
-			target: containerEl,
-			props,
+			target: containerEl, props,
 		});
 	}
 

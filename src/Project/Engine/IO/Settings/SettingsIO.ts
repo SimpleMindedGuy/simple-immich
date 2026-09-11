@@ -65,6 +65,7 @@ export class SettingsIO {
 			NextId: nextId
 		};
 
+		console.log(newConnection);
 
 		await this.SetSettings(newSettings)
 	}

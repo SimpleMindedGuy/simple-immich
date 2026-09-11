@@ -18,9 +18,9 @@ function SetConnectionReloader(func: AsyncVoidFunction): void {
 }
 
 
-export function useConnectionReloader() {
+export function UseConnectionReloader(): AsyncVoidFunction {
 
-	const reloadFunction = getContext(RELOAD_CONNECTION_CONTEXT);
+	const reloadFunction: AsyncVoidFunction = getContext(RELOAD_CONNECTION_CONTEXT);
 	if (!reloadFunction) {
 		throw error("useConnectionReloader : failed to get context ");
 	}
@@ -45,9 +45,15 @@ export class SettingsPageStateService implements ISetingsPagePropertiesControlle
 
 		const settingService = new SettingsService(props.settingsProcessor)
 
+		// const self = this;
+		this.State = {
+			connections: [],
+		};
+
 		this._processor = new SettingsPageStateController(settingService);
 		this._props = props;
 		this._InitService();
+		this._GetConnections()
 	}
 
 
@@ -55,9 +61,8 @@ export class SettingsPageStateService implements ISetingsPagePropertiesControlle
 	private _InitService() {
 		this._InitCommands();
 		this._InitMeta();
-		this._InitState();
 
-		SetConnectionReloader(this._GetConnections);
+		SetConnectionReloader(() => { return this._GetConnections() });
 	}
 
 	private _InitCommands() {
@@ -76,20 +81,13 @@ export class SettingsPageStateService implements ISetingsPagePropertiesControlle
 
 	}
 
-	private async _InitState() {
-
-
-		// const self = this;
-		this.State = {
-			connections: [],
-		};
-
-	}
 
 
 	private async _GetConnections(): Promise<void> {
 
 		const cons: Array<IImmichConnection> = await this._processor.GetConnections()
+
+		console.log(cons);
 
 		if (!cons) {
 			return;
@@ -100,5 +98,4 @@ export class SettingsPageStateService implements ISetingsPagePropertiesControlle
 
 
 }
-
 

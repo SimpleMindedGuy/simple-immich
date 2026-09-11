@@ -5,10 +5,10 @@
 		slideOutParams,
 	} from "src/Base/Engine/Default/style/transitions/slide";
 	import type { IAccountPropertiesController } from "src/Project/Abstract/SettingsTap/AccountProperties/StateManager";
-	import type { IAccountFormProperties } from "src/Project/Abstract/SettingsTap/AccountProperties/AccountPropertiesFromAction";
-	import { AccountStateService } from "src/Project/Engine/Service/SettingsTap/AccountProperties/AccountService.svelte";
 	import AccountDetials from "../Atom/AccountDetials.svelte";
 	import AccountForm from "../Atom/AccountForm.svelte";
+	import { AccountStateService } from "src/Project/Engine/Service/SettingsTap/AccountProperties/StateManagerService.svelte";
+	import type { IAccountFormProperties } from "src/Project/Abstract/SettingsTap/AccountProperties/Form";
 
 	const props: IAccountFormProperties = $props();
 

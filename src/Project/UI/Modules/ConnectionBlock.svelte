@@ -1,16 +1,11 @@
 <script lang="ts">
 	import type { BackgroundClass } from "src/Base/Abstract/style/background";
 	import { GetNextBackgroundClass } from "src/Base/Engine/Process/style/background";
-	import { SettingsStore } from "src/Project/Engine/IO/Settings/store.svelte";
 	import ConnectionProperties from "../Component/ConnectionProperties.svelte";
 	import Connection from "../Atom/Connection.svelte";
-	import type { ISimpleImmichSettings } from "src/Base/Abstract/pluginSettings";
 	import type { IConnectionBlock } from "src/Project/Abstract/SettingsTap/SettingsPage/SettingsPage";
 
-	//FIX: Create state manager
-
 	const props: IConnectionBlock = $props();
-	// const settings: ISimpleImmichSettings = $derived($SettingsStore);
 	const nextBg: BackgroundClass = GetNextBackgroundClass(
 		props.bg ?? "primary",
 	);
@@ -31,6 +26,7 @@
 			app={props.app}
 			settingsProcessor={props.settingsProcessor}
 			{connection}
+			formFunction={"Update"}
 			bg={nextBg}
 		/>
 	{/each}

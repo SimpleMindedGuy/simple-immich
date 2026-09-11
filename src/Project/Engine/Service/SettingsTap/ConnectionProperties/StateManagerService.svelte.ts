@@ -5,6 +5,7 @@ import type { IConnectionProperties, IConnectionPropertiesController, TConnectio
 import { GetNextBackgroundClass } from "src/Base/Engine/Process/style/background";
 import type { TConnection_Form_Commands_Map, TConnection_Form_BooleanMap } from "src/Project/Abstract/SettingsTap/ConneectionProperties/Button";
 import { SettingsService } from "../../Settings/SettingsService";
+import { UseConnectionReloader } from "../SettingsPage/StateManagerService.svelte";
 
 
 export interface IConnectionFormRequest {
@@ -33,18 +34,11 @@ export class ConnectionStateService implements IConnectionPropertiesController {
 
 	private _processor: ConnectionStateController;
 	private _props: IConnectionProperties;
+	private _ReloadConnections = UseConnectionReloader();
 
 	Meta: TConnectionPropertiesMeta;
 	Commands: TConnection_Form_Commands_Map;
-	State: TConnectionPropertiesState = $state(
-		{
-			inputUrl: "",
-			isEditing: false,
-			formIcons: [],
-			connection: null,
-			get accounts() { return [] }
-		}
-	);
+	State: TConnectionPropertiesState;
 
 
 	constructor(props: IConnectionProperties) {
@@ -54,6 +48,23 @@ export class ConnectionStateService implements IConnectionPropertiesController {
 		this._processor = new ConnectionStateController(settingService);
 		this._props = props;
 		this._InitService();
+
+
+		// eslint-disable-next-line @typescript-eslint/no-this-alias
+		const self = this;
+
+		this.State = $state({
+			inputUrl: self._props.connection?.Url ?? "",
+			isEditing: self._props.editing ?? false,
+			connection: self._props.connection ?? null,
+
+			get formIcons() {
+				return self._GetFormIcons();
+			},
+			get accounts() {
+				return self._GetAccounts();
+			}
+		});
 	}
 
 
@@ -61,34 +72,17 @@ export class ConnectionStateService implements IConnectionPropertiesController {
 	private _InitService() {
 		this._InitCommands();
 		this._InitMeta();
-		this._InitState();
-
-	}
-
-
-	private _InitState() {
-
-		// eslint-disable-next-line @typescript-eslint/no-this-alias
-		const self = this;
-		this.State = {
-			inputUrl: this._props.connection?.Url ?? "",
-			isEditing: self._props.editing ?? false,
-
-			connection: this._props.connection ?? null,
-			get formIcons() { return self._GetFormIcons(); },
-			get accounts() { return self._GetAccounts(); }
-		};
 
 	}
 
 	private _InitCommands() {
 
 		this.Commands = {
-			Reset: this.Reset,
-			Create: this.Create,
-			Update: this.Update,
-			Delete: this.Delete,
-			Toggle_Edit: this.ToggleEditing,
+			Reset: () => this.Reset,
+			Create: (e: MouseEvent | PointerEvent) => this.Create(e),
+			Update: (e: MouseEvent | PointerEvent) => this.Update(e),
+			Delete: (e: MouseEvent | PointerEvent) => this.Delete(e),
+			Toggle_Edit: (e: MouseEvent | PointerEvent) => this.ToggleEditing(e),
 		};
 	}
 
@@ -98,7 +92,7 @@ export class ConnectionStateService implements IConnectionPropertiesController {
 		this.Meta = {
 
 
-			formMode: this._props.formFunction,
+			formMode: this._props.formFunction!,
 			bg: this._props.bg ?? "primary",
 			nextBg: GetNextBackgroundClass(this._props.bg!) ?? "secondary",
 
@@ -120,30 +114,47 @@ export class ConnectionStateService implements IConnectionPropertiesController {
 	}
 
 
-	private Create(event: MouseEvent | PointerEvent) {
+	private async Create(event: MouseEvent | PointerEvent) {
 		if (event) event.preventDefault();
 
+
+		console.log("logging ")
+
 		const con: IImmichConnection = {
-			...this._props.connection,
 			Id: null,
 			Url: this.State.inputUrl
 		}
 		const request: IConnectionRequest = { connection: con }
 
+		const result = await this._processor.Create(request);
 
-		return this._processor.Create(request);
+		console.log(result)
+
+		this._ReloadConnections();
+
+		return result;
 	}
 
-	private Update(event: MouseEvent | PointerEvent) {
+	private async Update(event: MouseEvent | PointerEvent) {
 		if (event) event.preventDefault();
 		const request: IConnectionRequest = { connection: this._props.connection! }
-		return this._processor.Update(request);
+
+		const result = await this._processor.Update(request);
+
+		this._ReloadConnections();
+
+
+		return result;
 	}
 
-	private Delete(event: MouseEvent | PointerEvent): Promise<unknown> {
+	private async Delete(event: MouseEvent | PointerEvent): Promise<unknown> {
 		if (event) event.preventDefault();
 		const request: IConnectionRequest = { connection: this._props.connection! }
-		return this._processor.Delete(request);
+		const result = await this._processor.Delete(request);
+
+		this._ReloadConnections();
+
+		return result;
 	}
 
 	private Reset() {
@@ -164,7 +175,7 @@ export class ConnectionStateService implements IConnectionPropertiesController {
 	}
 
 	private _GetFormIcons() {
-		return this._processor.getFormIcons(this._props.formFunction, this._booleanMap, this.Commands)
+		return this._processor.getFormIcons(this._props.formFunction!, this._booleanMap, this.Commands)
 	}
 
 

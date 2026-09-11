@@ -27,7 +27,7 @@ const Submit_Update_Button_Map: TConnection_Form_Button_Map = {
 			condition: null
 		}
 	],
-	inclusionRule: "!Hidden",
+	inclusionRule: "!Hidden && Edit",
 	events: {
 		onClick: "Update"
 	}
@@ -55,7 +55,13 @@ const Toggle_Edit_button_Map: TConnection_Form_Button_Map =
 		icon: "pen",
 		label: null,
 		hint: "hint",
-		condition: null
+		condition: '!Edit'
+	},
+	{
+		icon: "cross",
+		label: null,
+		hint: "hint",
+		condition: 'Edit'
 	}],
 	inclusionRule: "!Hidden",
 	events: {
