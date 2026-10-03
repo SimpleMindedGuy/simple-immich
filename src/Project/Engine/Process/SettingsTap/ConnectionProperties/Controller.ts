@@ -4,7 +4,7 @@ import { type IResolveButtonsListRequest, ResolveButtonsList } from "src/Base/En
 import { Connection_Form_Icon_Collection, Connection_Form_Layout_Collection } from "src/Project/Engine/Default/SettingsTap/ConnectionProperties/Buttons";
 import { SettingsService, type IConnectionRequest } from "src/Project/Engine/Service/Settings/SettingsService";
 import type { TGnericBooleanMap } from "src/Base/Abstract/util/resolver/booleanResolver";
-import type { TImmichAccount } from "src/Base/Abstract/pluginSettings";
+import type { TImmichAccount } from "src/Project/Abstract/Settings/pluginSettings";
 
 
 

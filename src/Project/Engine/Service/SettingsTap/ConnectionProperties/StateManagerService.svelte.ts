@@ -1,4 +1,3 @@
-import type { IImmichConnection, TImmichAccount } from "src/Base/Abstract/pluginSettings";
 import type { SettingsProcessor } from "../../../Process/Settings/SettingsProcecssor";
 import { ConnectionStateController } from "src/Project/Engine/Process/SettingsTap/ConnectionProperties/Controller";
 import type { IConnectionProperties, IConnectionPropertiesController, TConnectionPropertiesMeta, TConnectionPropertiesState } from "src/Project/Abstract/SettingsTap/ConneectionProperties/StateManager";
@@ -6,6 +5,7 @@ import { GetNextBackgroundClass } from "src/Base/Engine/Process/style/background
 import type { TConnection_Form_Commands_Map, TConnection_Form_BooleanMap } from "src/Project/Abstract/SettingsTap/ConneectionProperties/Button";
 import { SettingsService } from "../../Settings/SettingsService";
 import { UseConnectionReloader } from "../SettingsPage/StateManagerService.svelte";
+import type { IImmichConnection, TImmichAccount } from "src/Project/Abstract/Settings/pluginSettings";
 
 
 export interface IConnectionFormRequest {

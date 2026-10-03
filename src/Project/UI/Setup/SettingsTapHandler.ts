@@ -2,11 +2,11 @@ import { mount, unmount } from "svelte";
 import type SimpleImmichPlugin from "main";
 import { PluginSettingTab, App } from "obsidian";
 import { SecretsManager } from "src/Base/Engine/Service/util/secretsManager";
-import type { ISimpleImmichSettings } from "src/Base/Abstract/pluginSettings";
 import { SettingsIO } from "src/Project/Engine/IO/Settings/SettingsIO";
 import { SettingsProcessor } from "src/Project/Engine/Process/Settings/SettingsProcecssor";
 import SettingsPage from "../Page/SettingsTap.svelte";
 import type { ISettingsTabProps, TLoadSettings, TSaveSettings } from "src/Project/Abstract/SettingsTap/SettingsPage/SettingsPage";
+import type { ISimpleImmichSettings } from "src/Project/Abstract/Settings/pluginSettings";
 
 export class SimpleImmichSettingsTab extends PluginSettingTab {
 	private _component: Record<string, unknown>;

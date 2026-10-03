@@ -31,6 +31,19 @@ export class StringFunctions {
 		return url;
 	}
 
+
+	static GetDomainFromUrl(str: string): string | null {
+		const urlSanitizeReg = new RegExp(/(?<=https?:\/\/)(\w+\.)+\w{2,}(?=\/.+)/);
+		const url = str.match(urlSanitizeReg);
+
+
+		if (url != null) {
+			return url[0]
+		}
+
+		return null;
+	}
+
 	static UrlValidate(str: string): boolean {
 		let isValid = false;
 

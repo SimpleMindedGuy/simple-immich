@@ -1,7 +1,7 @@
 
 import { Notice } from "obsidian";
-import type { IImmichConnection, TImmichAccount } from "src/Base/Abstract/pluginSettings";
 import type { SettingsProcessor } from "../../Process/Settings/SettingsProcecssor";
+import type { IImmichConnection, TImmichAccount } from "src/Project/Abstract/Settings/pluginSettings";
 
 
 export interface IAccountFormRequest {

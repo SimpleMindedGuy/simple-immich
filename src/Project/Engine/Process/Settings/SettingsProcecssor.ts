@@ -1,8 +1,7 @@
 import { StringFunctions } from "src/Base/Engine/Process/util/stringFunctions";
 import type { SecretsManager } from "src/Base/Engine/Service/util/secretsManager";
-import { IsReachable } from "../Immich/Server/IsReachable";
 import { SettingsIO } from "../../IO/Settings/SettingsIO";
-import type { IImmichConnection, TImmichAccount } from "src/Base/Abstract/pluginSettings";
+import type { IImmichConnection, TImmichAccount } from "src/Project/Abstract/Settings/pluginSettings";
 
 export class SettingsProcessor {
 	private readonly _secretsManager: SecretsManager;
@@ -46,13 +45,13 @@ export class SettingsProcessor {
 		const url = connection.Url;
 
 
-		const cleanUrl = StringFunctions.UrlSanitize(url);
-		const isValidUrl = StringFunctions.UrlValidate(cleanUrl);
+		const ImmichDomain = StringFunctions.GetDomainFromUrl(url)
 
+		if (ImmichDomain == null || ImmichDomain == "" || ImmichDomain == undefined) {
 
-		if (!isValidUrl) {
-			console.error("Not valid url")
+			console.error(`Domain is not a valid domain : ${ImmichDomain}`)
 			return;
+
 		}
 
 		const isReachable = await IsReachable(cleanUrl);

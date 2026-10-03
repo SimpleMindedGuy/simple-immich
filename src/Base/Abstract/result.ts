@@ -1,43 +1,25 @@
 
 
-export type SuccessResult<T> = T extends null | undefined ? SuccessEmptyResult : SuccessDataResult<T>
+export type TResult<T> = TSuccessResult<T> | TErrorResult;
 
-export interface SuccessEmptyResult {
-	IsError: false,
+export type TSuccessResult<T> = {
+
+	Success: true,
+	Data: T | null,
 	Messages: Array<string>,
-
-}
-
-export interface SuccessDataResult<T> {
-	IsError: false,
-	Data: T,
-	Messages: Array<string>,
+	Code: number,
 }
 
 
-export type FailureResult<T> = T extends null | undefined ? FailureEmptyResult : FailureDataResult<T>
-
-export interface FailureEmptyResult {
-	IsError: true,
-	Error: ResultError,
+export type TErrorResult = {
+	Success: false,
 	Messages: Array<string>,
+	Code: number,
+	Error?: unknown | null,
 }
 
-
-export interface FailureDataResult<T> {
-	IsError: true,
-	Error: ResultError,
-	Messages: Array<string>,
-	Data: T,
-}
-
-
-export interface ResultError {
-	Messages: Array<string>,
-	Code?: string | number,
-	Source?: string,
-}
-
-
-
-export type Result<T> = SuccessResult<T> | FailureResult<T>; 
+// export interface Result {
+// 	Success: false,
+// 	Messages: Array<string>,
+// 	Code: number,
+// }

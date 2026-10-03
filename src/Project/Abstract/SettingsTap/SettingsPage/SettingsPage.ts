@@ -1,7 +1,7 @@
 import type { App } from "obsidian";
-import type { IImmichConnection, ISimpleImmichSettings } from "src/Base/Abstract/pluginSettings";
 import type { BackgroundClass } from "src/Base/Abstract/style/background";
 import type { SettingsProcessor } from "src/Project/Engine/Process/Settings/SettingsProcecssor";
+import type { IImmichConnection, ISimpleImmichSettings } from "../../Settings/pluginSettings";
 
 
 
