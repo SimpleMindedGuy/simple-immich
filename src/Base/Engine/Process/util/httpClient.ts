@@ -1,106 +1,59 @@
 import { requestUrl, type RequestUrlParam, type RequestUrlResponse } from "obsidian";
 import type { TResult } from "src/Base/Abstract/result";
+import { HttpMethod, type DataMppaer, type HttpClientRequest, type IHttpClient, type INormalizedHttpRequestOptions, type INormalizedHttpResponse } from "src/Base/Abstract/util/httpClient";
 
 
-
-export interface HttpClientRequest {
-
-	url: URL | string;
-	body?: string | ArrayBuffer,
-	headers?: Record<string, string>,
-	abortSignal?: AbortSignal | null,
-}
-
-
-
-export interface INormalizedHttpRequestOptions {
-
-	url: URL | string;
-	method: HttpMethod
-
-	body?: string | ArrayBuffer,
-	headers?: Record<string, string>,
-	abortSignal?: AbortSignal | null,
-}
-
-
-export interface INormalizedHttpResponse {
-	status: number;
-	data: unknown;
-}
-
-
-
-type DataMppaer<T> = (rawData: unknown) => T;
-
-
-export enum HttpMethod {
-	POST = "POST",
-	GET = "GET",
-	PUT = "PUT",
-	DELETE = "DELETE",
-	PATCH = "PATCH",
-}
-
-
-
-export class HttpClient {
+export class HttpClient implements IHttpClient {
 
 	async GetAsync<T>(request: HttpClientRequest, Mapper: DataMppaer<T>): Promise<TResult<T>> {
 
-		const { url, body, headers, abortSignal = null } = request;
-
-		const options: INormalizedHttpRequestOptions = {
-			url: url,
-			headers: headers,
-			body: body,
-			abortSignal: abortSignal,
-			method: HttpMethod.GET,
-		}
-
+		const options: INormalizedHttpRequestOptions = this._NormalizeRequest(request, HttpMethod.GET);
 
 		return await this._ExecuteAsync<T>(options, Mapper);
 	}
-
 
 	async PostAsync<T>(request: HttpClientRequest, Mapper: DataMppaer<T>): Promise<TResult<T>> {
 
-		const { url, body, headers, abortSignal = null } = request;
-
-		const options: INormalizedHttpRequestOptions = {
-			url: url,
-			headers: headers,
-			body: body,
-			abortSignal: abortSignal,
-			method: HttpMethod.POST,
-		}
-
+		const options: INormalizedHttpRequestOptions = this._NormalizeRequest(request, HttpMethod.POST);
 
 		return await this._ExecuteAsync<T>(options, Mapper);
 	}
 
+	async PutAsync<T>(request: HttpClientRequest, Mapper: DataMppaer<T>): Promise<TResult<T>> {
+
+		const options: INormalizedHttpRequestOptions = this._NormalizeRequest(request, HttpMethod.PUT);
+
+		return await this._ExecuteAsync<T>(options, Mapper);
+	}
+
+	async PatchAsync<T>(request: HttpClientRequest, Mapper: DataMppaer<T>): Promise<TResult<T>> {
+
+		const options: INormalizedHttpRequestOptions = this._NormalizeRequest(request, HttpMethod.PATCH);
+
+		return await this._ExecuteAsync<T>(options, Mapper);
+
+	}
+
+	async DeleteAsync<T>(request: HttpClientRequest, Mapper: DataMppaer<T>): Promise<TResult<T>> {
+
+		const options: INormalizedHttpRequestOptions = this._NormalizeRequest(request, HttpMethod.DELETE);
+
+		return await this._ExecuteAsync<T>(options, Mapper);
+	}
 
 
 
 	protected async _ExecuteAsync<T>(options: INormalizedHttpRequestOptions, Mapper: DataMppaer<T>) {
 
-
-
-
 		if (!options.url) {
-
 			return this._ReturnInvalidUrlResponse(options.url);
-
 		}
 
 		if (!options) {
-
 			return this._ReturnInvalidOptionsResponse(options);
-
 		}
 
 		try {
-
 
 			const RequestOptions: RequestInit = {
 				headers: options.headers,
@@ -122,12 +75,8 @@ export class HttpClient {
 			return await this._HandleResponse<T>(normalizedResponse, Mapper);
 		}
 		catch (error) {
-
 			return this._ReturnUnHandledErrorResponse(error as Error);
-
 		}
-
-
 
 	}
 
@@ -142,8 +91,7 @@ export class HttpClient {
 
 		const Messages = [];
 
-		Messages.push(HttpClient.GetStatusMessage(response.status));
-
+		Messages.push(HttpClient._GetStatusMessage(response.status));
 
 		if (!IsSuccess) {
 
@@ -152,19 +100,14 @@ export class HttpClient {
 				Messages,
 				Code: response.status,
 			}
-
 			return result;
 		}
-
 
 		let MappedData: T | null = null;
 
 		if (response.data) {
-
 			MappedData = Mapper(response.data);
 		}
-
-
 
 		const result: TResult<T> = {
 			Success: true,
@@ -173,11 +116,10 @@ export class HttpClient {
 			Code: response.status,
 		}
 
-
 		return result;
 	}
 
-	protected static GetStatusMessage(statusCode: number) {
+	protected static _GetStatusMessage(statusCode: number) {
 
 		switch (statusCode) {
 			// informational responses
@@ -232,12 +174,8 @@ export class HttpClient {
 			Success: false,
 			Messages: [`Invalid Or Missing  Url : ${url}`],
 			Code: 0,
-
 		}
-
 		return result;
-
-
 	}
 
 
@@ -251,10 +189,7 @@ export class HttpClient {
 			Error: options
 
 		}
-
 		return result;
-
-
 	}
 
 	protected _ReturnUnHandledErrorResponse(error: Error): TResult<null> {
@@ -264,41 +199,40 @@ export class HttpClient {
 			Messages: [`HttpClient Unhandled Error  : ${error?.message}`],
 			Code: 0,
 			Error: error,
-
-
 		}
-
 		return result;
+	}
 
 
+	protected _NormalizeRequest(request: HttpClientRequest, method: HttpMethod) {
+
+		const { url, body, headers, abortSignal = null } = request;
+		const options: INormalizedHttpRequestOptions = {
+			url: url,
+			headers: headers, body: body,
+			abortSignal: abortSignal,
+			method: method
+		}
+		return options;
 	}
 
 
 }
 
 
-export class ObsidianHttpClient extends HttpClient {
-
-
+export class ObsidianHttpClient extends HttpClient implements IHttpClient {
 
 	override async _ExecuteAsync<T>(options: INormalizedHttpRequestOptions, Mapper: DataMppaer<T>) {
 
-
 		if (!options) {
-
 			return this._ReturnInvalidOptionsResponse(options);
-
 		}
 
 		if (!options.url) {
-
 			return this._ReturnInvalidUrlResponse(options.url);
-
 		}
 
-
 		try {
-
 			const request: RequestUrlParam = {
 				url: options.url.toString(),
 				headers: options.headers,
@@ -308,15 +242,11 @@ export class ObsidianHttpClient extends HttpClient {
 			}
 
 			const response: RequestUrlResponse = await requestUrl(request);
-
 			const rawData = await response.json ?? response.text;
-
 			const normalizedResponse: INormalizedHttpResponse = {
-
 				data: rawData,
 				status: response.status
 			}
-
 
 			return await this._HandleResponse<T>(normalizedResponse, Mapper);
 		}
@@ -327,7 +257,4 @@ export class ObsidianHttpClient extends HttpClient {
 		}
 
 	}
-
-
-
 }
